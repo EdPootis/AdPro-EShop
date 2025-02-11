@@ -42,8 +42,6 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
-}
-
     @GetMapping("/edit/{id}")
     public String showEditProductPage(@PathVariable("id") String id, Model model) {
         Product product = service.findById(id);

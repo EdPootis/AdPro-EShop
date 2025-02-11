@@ -33,7 +33,6 @@ public class ProductRepository {
         productData.removeIf(product -> product.getProductId().equals(id));
     }
 
-}
     public Product update(Product product) {
         Product existingProduct = findById(product.getProductId());
         if (existingProduct != null) {
