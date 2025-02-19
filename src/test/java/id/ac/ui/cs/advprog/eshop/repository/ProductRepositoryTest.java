@@ -17,9 +17,12 @@ class ProductRepositoryTest {
 
     @InjectMocks
     ProductRepository productRepository;
+    
     @BeforeEach
     void setUp() {
+        // Empty method because there is no common setup procedure before each test.
     }
+    
     @Test
     void testCreateAndFind() {
         Product product = new Product();
