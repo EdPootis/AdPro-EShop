@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
 
@@ -17,9 +16,12 @@ class ProductRepositoryTest {
 
     @InjectMocks
     ProductRepository productRepository;
+    
     @BeforeEach
     void setUp() {
+        // Empty method because there is no common setup procedure before each test.
     }
+    
     @Test
     void testCreateAndFind() {
         Product product = new Product();
