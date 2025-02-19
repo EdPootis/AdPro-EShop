@@ -1,7 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
-
-    private ProductRepository productRepository;
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -54,7 +51,7 @@ class ProductServiceImplTest {
 
         assertNotNull(allProducts);
         assertEquals(1, allProducts.size());
-        assertEquals(product.getProductId(), allProducts.get(0).getProductId());
+        assertEquals(product.getProductId(), allProducts.getFirst().getProductId());
     }
 
     @Test
