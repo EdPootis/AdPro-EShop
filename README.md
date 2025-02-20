@@ -2,7 +2,7 @@
 **Nama: Edmond Christian**<br>
 **NPM: 2306208363**
 
-<details open>
+<details>
 <summary>Modul 1</summary>
 
 ## Modul 1
@@ -30,7 +30,7 @@ Lalu, ada juga beberapa kekurangan spesifik pada *source code* proyek ini, yaitu
 - Tampilan aplikasi yang polos
 
 ### Reflection 2
-1. 
+1.
 - Setelah membuat *unit tests* saya merasa lebih yakin bahwa aplikasi yang dibuat akan berjalan sesuai dengan fungsinya.
 - Menurut saya, jumlah *unit test* dalam suatu *class* dipengaruhi oleh berapa banyak fungsi atau hal yang dilakukan di dalamnya, dan hasil yang diinginkan. Namun *unit test* sebaiknya dilakukan dalam jumlah yang sedikit tapi memiliki *coverage* yang banyak.
 - Kita mengetahui *unit test* cukup jika memiliki *coverage* yang banyak dan juga mencakupi *edge cases*. Dengan ini kita mengurangi kemungkinan kasus di mana program error.
@@ -38,3 +38,26 @@ Lalu, ada juga beberapa kekurangan spesifik pada *source code* proyek ini, yaitu
 
 2. Menurut saya pembuatan file baru untuk melakukan tes yang memverifikasi jumlah barang dalam *list product* akan mengurangi kualitas kode *functional test*. Ini karena banyaknya prosedur dan variabel yang mirip. Karena itu, sebaiknya tes tersebut dilakukan di *class* yang sama seperti pada file `CreateProductFunctionalTest.java`. Jika tidak, kualitas kode akan berkurang karena adanya pengulangan/duplikasi kode. Selain itu verifikasi jumlah barang dalam *list product* juga masih berhubungan dengan proses *create product* yang sudah memiliki filenya sehingga lebih masuk akan jika berada pada file yang sama.
 </details>
+
+<details open>
+
+<summary>Modul 2</summary>
+
+## Modul 2
+### Reflection
+1. Pada *exercise* saya memperbaiki beberapa isu kode, isu-isunya adalah sebagai berikut:
+- `Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.
+Methods should not be empty java:S1186`, isu ini disebabkan adanya *method* pada *concrete class* yang memiliki *body* kosong. Pada kode saya hal ini terdapat pada *method* `SetUp()` dalam salah satu *unit test*. Hal yang saya lakukan untuk memperbaiki isunya adalah menambahkan *comment* yang menjelaskan kenapa terdapat *method* kosong tersebut.
+- `Group dependencies by their destination.
+Dependencies should be grouped by destination kotlin:S6629`, isu ini terjadi karena pada `build.gradle.kts` urutan *dependencies* yang ditulis tidak dikelompokkan berdasarkan tujuannya dan tidak berurutan. Untuk memperbaikinya, saya hanya perlu mengelompokkan *depedencies* sesuai tujuan/fungsinya (misal: `implementation(..)` dan `testImplementation(..)`)
+- `'Unnecessary imports should be removed java:S1128`, sesuai namanya isu ini terjadi karena terdapat *import* yang tidak digunakan dalam beberapa file. Cara memperbaikinya hanya dengan menghapusnya dari kode.
+
+- `Swap these 2 arguments so they are in the correct order: expected value, actual value.
+Assertion arguments should be passed in the correct order java:S3415`, isu ini disebabkan urutan argumen pada *assertion method* yang kebalik. Hal ini dikarenakan urutan untuk *expected value* dan *actual value* sudah ditentukan untuk meningkatkan *maintability* kode. Yang saya lakukan untuk memperbaikinya adalah mengubah urutan argumen pada *method-method* tersebut.
+
+- Isu terakhir yang saya perbaiki adalah menghapus modifier `Public` pada beberapa *java test class*.
+
+2. Menurut saya, implementasi yang sekarang telah memenuhi definisi CI dan CD. Pada implementasi sekarang, setiap terjadi perubahan atau perbaruan *codebase* yang di-*push*, maka akan langsung dilakukan pengetesan *unit tests* oleh GitHub Actions, dan *code analysis* oleh OSSF Scorecard dan SonarCloud sehingga sudah memenuhi definisi dari *Continuous Integration*. Dengan ini kode akan dicek kualitas dan kebenarannya setiap terjadi perubahan. Lalu, setiap *push* pada branch *master* yang dilakukan juga akan dilakukan *deployment* yang otomatis oleh Koyeb beserta tes-tesnya sehingga sudah memenuhi *Continuous Deployment*. Dengan ini maka workflow kode sudah memenuhi definisi dari *Continuous Integration* dan *Continuous Deployment*.
+</details>
+
+
