@@ -2,6 +2,8 @@
 **Nama: Edmond Christian**<br>
 **NPM: 2306208363**
 
+[Link Deployment](https://frequent-lynnett-edpootis-3043dec4.koyeb.app/)
+
 <details>
 <summary>Modul 1</summary>
 
