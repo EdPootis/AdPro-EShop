@@ -39,7 +39,7 @@ Lalu, ada juga beberapa kekurangan spesifik pada *source code* proyek ini, yaitu
 2. Menurut saya pembuatan file baru untuk melakukan tes yang memverifikasi jumlah barang dalam *list product* akan mengurangi kualitas kode *functional test*. Ini karena banyaknya prosedur dan variabel yang mirip. Karena itu, sebaiknya tes tersebut dilakukan di *class* yang sama seperti pada file `CreateProductFunctionalTest.java`. Jika tidak, kualitas kode akan berkurang karena adanya pengulangan/duplikasi kode. Selain itu verifikasi jumlah barang dalam *list product* juga masih berhubungan dengan proses *create product* yang sudah memiliki filenya sehingga lebih masuk akan jika berada pada file yang sama.
 </details>
 
-<details open>
+<details>
 
 <summary>Modul 2</summary>
 
@@ -57,7 +57,27 @@ Assertion arguments should be passed in the correct order java:S3415`, isu ini d
 
 - Isu terakhir yang saya perbaiki adalah menghapus modifier `Public` pada beberapa *java test class*.
 
-2. Menurut saya, implementasi yang sekarang telah memenuhi definisi CI dan CD. Pada implementasi sekarang, setiap terjadi perubahan atau perbaruan *codebase* yang di-*push*, maka akan langsung dilakukan pengetesan *unit tests* oleh GitHub Actions, dan *code analysis* oleh OSSF Scorecard dan SonarCloud sehingga sudah memenuhi definisi dari *Continuous Integration*. Dengan ini kode akan dicek kualitas dan kebenarannya setiap terjadi perubahan. Lalu, setiap *push* pada branch *master* yang dilakukan juga akan dilakukan *deployment* yang otomatis oleh Koyeb beserta tes-tesnya sehingga sudah memenuhi *Continuous Deployment*. Dengan ini maka workflow kode sudah memenuhi definisi dari *Continuous Integration* dan *Continuous Deployment*. Dengan ini juga setiap perubahan kode di *branch master* akan langsung mengetes dan mengdeploy proyek sehingga proses automasi CI/CD terjadi.  
+2. Menurut saya, implementasi yang sekarang telah memenuhi definisi CI dan CD. Pada implementasi sekarang, setiap terjadi perubahan atau perbaruan *codebase* yang di-*push*, maka akan langsung dilakukan pengetesan *unit tests* oleh GitHub Actions, dan *code analysis* oleh OSSF Scorecard dan SonarCloud sehingga sudah memenuhi definisi dari *Continuous Integration*. Dengan ini kode akan dicek kualitas dan kebenarannya setiap terjadi perubahan. Lalu, setiap *push* pada branch *master* yang dilakukan juga akan dilakukan *deployment* yang otomatis oleh Koyeb beserta tes-tesnya sehingga sudah memenuhi *Continuous Deployment*. Dengan ini maka workflow kode sudah memenuhi definisi dari *Continuous Integration* dan *Continuous Deployment*. Dengan ini juga setiap perubahan kode di *branch master* akan langsung mengetes dan mengdeploy proyek sehingga proses automasi CI/CD terjadi.
 </details>
 
+<details open>
 
+<summary>Modul 3</summary>
+
+## Modul 3
+### Reflection
+
+1. Explain what principles you apply to your project!
+- Single Responsibility Principle, pada proyek ini, *principle* ini diterapkan dengan memindahkan class `CarController` yang awalnya berada pada file `ProductController.java` ke filenya sendiri. Hal ini dilakukan karena keduanya memiliki tujuan yang berbeda.
+- Open Closed Principle, pada proyek ini, OCP diterapkan pada interface `CarService` dan `ProductService`. Jika ingin menambahkan fitur baru terkait model yang ada, dapat dibuat implementasi yang baru tanpa melakukan modifikasi terhadap interface ataupun implementasi yang sudah ada.
+- Liskov Substitution Principle, pada proyek ini awalnya class `CarController` memiliki *inheritance* dari `ProductController` sehingga menjadi subclassnya. Agar LSP diterapkan, maka dihapus hubungan *inheritance* dari kedua kelas tersebut. Ini dilakukan karena menurut LSP superclass `ProductController` harus bisa disubstitusi dengan `CarController`, tapi kedua class tersebut memiliki fungsi yang berbeda sehingga tidak bisa, dan sebaiknya dihapus hubungan super dan subclassnya.
+- Interface Segregation Principle, pada proyek ini diterapkan melalui interface `CarService` dan `ProductService` yang hanya berisi *method* yang diperlukan implementasinya, tanpa mengandung *method* yang tidak diperlukan (sudah tersegregasi menurut modelnya.
+- Dependency Inversion Principle, pada proyek ini awalnya class `CarController` yang merupakan *high level module* memiliki dependensi terhadap `CarServiceImpl` yang merupakan sebuah *detailed*/*concrete* class, sehingga agar DIP diterapkan digganti dependensi tersebut terhadap interface `CarService`.
+2. Explain the advantages of applying SOLID principles to your project with examples.
+- Meningkatkan *maintainability*, contohnya karena SOLID Principle, setiap *model*, *service*, *repository*, dan *controller* tersegregasi berdasarkan *model* `Product` atau `Car`. Dengan ini maka jika ingin mengubah fitur-fitur yang berkaitan dengan salah satu model, hanya perlu mengubah kode dari file yang terkaitan, tanpa memengaruhi kode untuk model lain.
+- Memudahkan *testing* dan pengembangan kode, karena setiap class yang sudah dipisahkan dengan tujuannya masing-masing, menjadi mudah untuk mengecek bagian apa yang sudah dites atau belum. Juga karena itu untuk membuat fitur atau pengembangan proyek menjadi lebih cepat dan mudah karena struktur *codebase* yang rapih dapat mengurangi *bug* yang dapat terbuat, dan kemudahan membaca kode juga berpengaruh.
+
+3. Explain the disadvantages of not applying SOLID principles to your project with examples.
+- Kode yang berantakan/sulit dibaca, misalkan SOLID Principle tidak diterapkan maka class `CarController` akan tetap berada pada file `ProductController.java` yang seharusnya hanya untuk class `ProductController`, akibatnya kode berantakan yang juga memengaruhi hal lainnya.
+- Mengurangi *maintainability*, misalkan SOLID Principle tidak diterapkan maka suatu interface bisa saja menjadi `ProductAndCarService`
+</details>
