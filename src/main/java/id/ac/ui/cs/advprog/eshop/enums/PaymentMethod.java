@@ -7,7 +7,7 @@ public enum PaymentMethod {
     VOUCHER("Voucher Code"),
     COD("Cash on Delivery");
 
-    private String value;
+    private final String value;
 
     PaymentMethod(String value) {
         this.value = value;
