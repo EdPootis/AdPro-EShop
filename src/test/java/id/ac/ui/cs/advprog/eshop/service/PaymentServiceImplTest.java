@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
@@ -9,6 +10,7 @@ import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -57,12 +59,15 @@ class PaymentServiceImplTest {
 
     @Test
     void testCreatePayment() {
-        Payment payment = payments.getFirst();
-        doReturn(payment).when(paymentRepository).save(payment);
+        Payment paymenttest = payments.getFirst();
+        ArgumentCaptor<Payment> paymentCaptor = ArgumentCaptor.forClass(Payment.class);
+        doReturn(paymenttest).when(paymentRepository).save(paymentCaptor.capture());
 
-        Payment result = paymentService.createPayment(payment);
-        verify(paymentRepository, times(1)).save(payment);
-        assertEquals(payment.getId(), result.getId());
+        Payment result = paymentService.addPayment(paymenttest.getOrder(), paymenttest.getMethod(), paymenttest.getPaymentData());
+        verify(paymentRepository, times(1)).save(paymentCaptor.getValue());
+        assertEquals(paymenttest.getMethod(), paymentCaptor.getValue().getMethod());
+        assertEquals(paymenttest.getPaymentData(), paymentCaptor.getValue().getPaymentData());
+        assertEquals(paymenttest.getOrder(), paymentCaptor.getValue().getOrder());
     }
 
     @Test
@@ -72,6 +77,7 @@ class PaymentServiceImplTest {
 
         Payment result = paymentService.setStatus(payment, PaymentStatus.SUCCESS.getValue());
         assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), result.getOrder().getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
@@ -82,12 +88,13 @@ class PaymentServiceImplTest {
 
         Payment result = paymentService.setStatus(payment, PaymentStatus.REJECTED.getValue());
         assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), result.getOrder().getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testSetStatusInvalid() {
-        Payment payment = payments.get(0);
+        Payment payment = payments.getFirst();
 
         assertThrows(IllegalArgumentException.class,
                 () -> paymentService.setStatus(payment, "invalid status"));
