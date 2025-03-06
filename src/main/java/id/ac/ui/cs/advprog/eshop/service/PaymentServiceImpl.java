@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
@@ -20,7 +21,14 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
         Payment payment = new Payment(UUID.randomUUID().toString(), method, paymentData, order);
-        return paymentRepository.save(payment);
+
+        // Save dilakukan pada penentuan status
+        if (isValidPaymentData(payment)) {
+            this.setStatus(payment, PaymentStatus.SUCCESS.getValue());
+        } else {
+            this.setStatus(payment, PaymentStatus.REJECTED.getValue());
+        }
+        return payment;
     }
 
     @Override
@@ -47,5 +55,32 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<Payment> getAllPayments() {
         return paymentRepository.getAllPayments();
+    }
+
+    public boolean isValidPaymentData(Payment payment) {
+        Map<String, String> paymentData = payment.getPaymentData();
+
+        if (payment.getMethod().equals(PaymentMethod.VOUCHER.getValue())) {
+            if (!paymentData.containsKey("voucherCode")) return false;
+
+            String voucherCode = paymentData.get("voucherCode");
+            if (voucherCode == null || voucherCode.length() != 16 ||
+                    !voucherCode.startsWith("ESHOP")) {
+                return false;
+            }
+            int numericCount = 0;
+            for (char c : voucherCode.toCharArray()) {
+                if (Character.isDigit(c)) {
+                    numericCount++;
+                }
+            }
+            return numericCount == 8;
+
+        } else {
+            if (!paymentData.containsKey("address") ||
+                    !paymentData.containsKey("deliveryFee")) return false;
+            return !paymentData.get("address").isEmpty() &&
+                    !paymentData.get("deliveryFee").isEmpty();
+        }
     }
 }
