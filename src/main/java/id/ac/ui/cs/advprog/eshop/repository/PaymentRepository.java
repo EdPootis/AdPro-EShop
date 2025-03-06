@@ -11,10 +11,31 @@ import java.util.List;
 public class PaymentRepository {
     private List<Payment> paymentList = new ArrayList<>();
 
-    public Payment save(Payment payment) {return null;}
+    public Payment save(Payment payment) {
+        int i = 0;
+        for (Payment savedPayment : paymentList) {
+            if (savedPayment.getId().equals(payment.getId())) {
+                paymentList.remove(i);
+                paymentList.add(i, payment);
+                return payment;
+            }
+            i += 1;
+        }
 
-    public Payment findById(String id) {return null;}
+        paymentList.add(payment);
+        return payment;
+    }
 
-    public List<Payment> getAllPayments() {return null;}
+    public Payment findById(String id) {
+        for (Payment savedPayment : paymentList) {
+            if (savedPayment.getId().equals(id)) {
+                return savedPayment;
+            }
+        }
+        return null;
+    }
+
+    public List<Payment> getAllPayments() {
+        return new ArrayList<>(paymentList);
     }
 }
