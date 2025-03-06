@@ -1,5 +1,8 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,13 +13,47 @@ import java.util.Map;
 public class Payment {
     String id;
     String method;
-    @Setter
     String status;
     Map<String, String> paymentData; // to save payment sub-feature data.
+    Order order;
 
-    public Payment(String id, String method, Map<String, String> paymentData, Order order) {}
+    public Payment(String id, String method, Map<String, String> paymentData, Order order) {
+        if (paymentData == null || paymentData.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        String[] validPaymentMethod = {"Voucher Code", "Cash on Delivery"};
+        if (Arrays.stream(validPaymentMethod).noneMatch(item -> (item.equals(method)))) {
+            throw new IllegalArgumentException();
+        } else {
+            this.method = method;
+        }
 
-    public Payment(String id, String method, Map<String, String> paymentData, Order order, String status) {}
 
-    public void setStatus(String status) {}
+        this.id = id;
+        this.method = method;
+        this.paymentData = paymentData;
+        if (order == null) throw new IllegalArgumentException();
+        else this.order = order;
+        this.setStatus("SUCCESS");
+    }
+
+    public Payment(String id, String method, Map<String, String> paymentData, Order order, String status) {
+        if (paymentData == null || paymentData.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        this.id = id;
+        this.method = method;
+        this.paymentData = paymentData;
+        this.order = order;
+        this.setStatus(status);
+    }
+
+    public void setStatus(String status) {
+        String[] validStatus = {"SUCCESS", "REJECTED"};
+        if (Arrays.stream(validStatus).noneMatch(item -> (item.equals(status)))) {
+            throw new IllegalArgumentException();
+        } else {
+            this.status = status;
+        }
+    }
 }
