@@ -17,21 +17,29 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment createPayment(Payment payment) {
+        if (paymentRepository.findById(payment.getId()) == null) {
+            paymentRepository.save(payment);
+            return payment;
+        }
         return null;
     }
 
     @Override
     public Payment setStatus(Payment payment, String status) {
-        return null;
+        if (!PaymentStatus.contains(status)) {
+            throw new IllegalArgumentException("Invalid payment status");
+        }
+        payment.setStatus(status);
+        return paymentRepository.save(payment);
     }
 
     @Override
     public Payment getPayment(String paymentId) {
-        return null;
+        return paymentRepository.findById(paymentId);
     }
 
     @Override
     public List<Payment> getAllPayments() {
-        return null;
+        return paymentRepository.getAllPayments();
     }
 }
