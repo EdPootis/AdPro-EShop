@@ -28,12 +28,13 @@ class PaymentServiceImplTest {
     PaymentRepository paymentRepository;
     List<Payment> payments;
     Order order;
-    Map<String, String> paymentData;
+    Map<String, String> paymentDataVoucher;
+    Map<String, String> paymentDataCod;
 
     @BeforeEach
     void setUp() {
-        Map<String, String> paymentDataVoucher = new HashMap<>();
-        Map<String, String> paymentDataCod = new HashMap<>();
+        paymentDataVoucher = new HashMap<>();
+        paymentDataCod = new HashMap<>();
         paymentDataCod.put("address", "Jalan bagus 12");
         paymentDataCod.put("deliveryFee", "8000");
         paymentDataVoucher.put("voucherCode", "ESHOP1234ABC5678");
@@ -125,5 +126,65 @@ class PaymentServiceImplTest {
         List<Payment> result = paymentService.getAllPayments();
         assertEquals(payments.size(), result.size());
         assertTrue(result.containsAll(payments));
+    }
+
+    @Test
+    void testCreatePaymentWithValidVoucher() {
+        Payment payment = payments.getFirst();
+        ArgumentCaptor<Payment> paymentCaptor = ArgumentCaptor.forClass(Payment.class);
+        doReturn(payment).when(paymentRepository).save(paymentCaptor.capture());
+
+        Payment result = paymentService.addPayment(payment.getOrder(), payment.getMethod(), payment.getPaymentData());
+        verify(paymentRepository, times(1)).save(paymentCaptor.getValue());
+        assertEquals(payment.getMethod(), paymentCaptor.getValue().getMethod());
+        assertEquals(payment.getPaymentData(), paymentCaptor.getValue().getPaymentData());
+        assertEquals(payment.getOrder(), paymentCaptor.getValue().getOrder());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithInvalidVoucher() {
+        paymentDataVoucher.put("voucherCode", "INVALID12345678");
+        Payment payment = new Payment("8314bc6e-4070-4ec6-8d02-510c97427138",
+                PaymentMethod.VOUCHER.getValue(), paymentDataVoucher, order);
+        ArgumentCaptor<Payment> paymentCaptor = ArgumentCaptor.forClass(Payment.class);
+        doReturn(payment).when(paymentRepository).save(paymentCaptor.capture());
+
+        Payment result = paymentService.addPayment(payment.getOrder(), payment.getMethod(), payment.getPaymentData());
+        verify(paymentRepository, times(1)).save(paymentCaptor.getValue());
+        assertEquals(payment.getMethod(), paymentCaptor.getValue().getMethod());
+        assertEquals(payment.getPaymentData(), paymentCaptor.getValue().getPaymentData());
+        assertEquals(payment.getOrder(), paymentCaptor.getValue().getOrder());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithValidCod() {
+        Payment payment = payments.get(1);
+        ArgumentCaptor<Payment> paymentCaptor = ArgumentCaptor.forClass(Payment.class);
+        doReturn(payment).when(paymentRepository).save(paymentCaptor.capture());
+
+        Payment result = paymentService.addPayment(payment.getOrder(), payment.getMethod(), payment.getPaymentData());
+        verify(paymentRepository, times(1)).save(paymentCaptor.getValue());
+        assertEquals(payment.getMethod(), paymentCaptor.getValue().getMethod());
+        assertEquals(payment.getPaymentData(), paymentCaptor.getValue().getPaymentData());
+        assertEquals(payment.getOrder(), paymentCaptor.getValue().getOrder());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentWithInvalidCod() {
+        paymentDataCod.put("address", "");
+        Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
+                PaymentMethod.COD.getValue(), paymentDataCod, order);
+        ArgumentCaptor<Payment> paymentCaptor = ArgumentCaptor.forClass(Payment.class);
+        doReturn(payment).when(paymentRepository).save(paymentCaptor.capture());
+
+        Payment result = paymentService.addPayment(payment.getOrder(), payment.getMethod(), payment.getPaymentData());
+        verify(paymentRepository, times(1)).save(paymentCaptor.getValue());
+        assertEquals(payment.getMethod(), paymentCaptor.getValue().getMethod());
+        assertEquals(payment.getPaymentData(), paymentCaptor.getValue().getPaymentData());
+        assertEquals(payment.getOrder(), paymentCaptor.getValue().getOrder());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
     }
 }
