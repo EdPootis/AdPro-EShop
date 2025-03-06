@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -16,12 +18,9 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
 
     @Override
-    public Payment createPayment(Payment payment) {
-        if (paymentRepository.findById(payment.getId()) == null) {
-            paymentRepository.save(payment);
-            return payment;
-        }
-        return null;
+    public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
+        Payment payment = new Payment(UUID.randomUUID().toString(), method, paymentData, order);
+        return paymentRepository.save(payment);
     }
 
     @Override
@@ -30,6 +29,13 @@ public class PaymentServiceImpl implements PaymentService {
             throw new IllegalArgumentException("Invalid payment status");
         }
         payment.setStatus(status);
+
+        if (payment.getStatus().equals(PaymentStatus.SUCCESS.getValue())) {
+            payment.getOrder().setStatus(OrderStatus.SUCCESS.getValue());
+        } else if (payment.getStatus().equals(PaymentStatus.REJECTED.getValue())) {
+            payment.getOrder().setStatus(OrderStatus.FAILED.getValue());
+        }
+
         return paymentRepository.save(payment);
     }
 
