@@ -15,7 +15,7 @@ public enum PaymentMethod {
 
     public static boolean contains(String param) {
         for (PaymentMethod paymentMethod : PaymentMethod.values()) {
-            if (paymentMethod.name().equals(param)) {
+            if (paymentMethod.getValue().equals(param)) {
                 return true;
             }
         }

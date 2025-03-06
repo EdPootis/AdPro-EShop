@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,19 +40,19 @@ class PaymentTest {
     @Test
     void testCreateValidPayment() {
         Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                "Voucher Code", paymentDataVoucher, order);
+                PaymentMethod.VOUCHER.getValue(), paymentDataVoucher, order);
 
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
-        assertEquals("Voucher Code", payment.getMethod());
+        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
     }
 
     @Test
     void testCreateRejectedPayment() {
         Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                "Cash on Delivery", paymentDataVoucher, order, PaymentStatus.REJECTED.getValue());
+                PaymentMethod.COD.getValue(), paymentDataCod, order, PaymentStatus.REJECTED.getValue());
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
-        assertEquals("Cash on Delivery", payment.getMethod());
+        assertEquals(PaymentMethod.COD.getValue(), payment.getMethod());
     }
 
     @Test
@@ -66,14 +67,14 @@ class PaymentTest {
     void testCreatePaymentInvalidStatus() {
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                    "Cash on Delivery", paymentDataCod, order, "INVALID STATUS");
+                    PaymentMethod.COD.getValue(), paymentDataCod, order, "INVALID STATUS");
         });
     }
 
     @Test
     void testSetStatusToValidStatus() {
         Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                "Cash on Delivery", this.paymentDataCod, order);
+                PaymentMethod.COD.getValue(), this.paymentDataCod, order);
         payment.setStatus(PaymentStatus.REJECTED.getValue());
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
@@ -81,7 +82,7 @@ class PaymentTest {
     @Test
     void testSetStatusToInvalidStatus() {
         Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                "Cash on Delivery", this.paymentDataCod, order);
+                PaymentMethod.COD.getValue(), this.paymentDataCod, order);
         assertThrows(IllegalArgumentException.class, () -> order.setStatus("AAAA"));
     }
 
@@ -89,13 +90,13 @@ class PaymentTest {
     void testCreatePaymentEmptyData() {
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                    "Cash on Delivery", null, order);});
+                    PaymentMethod.COD.getValue(), null, order);});
     }
 
     @Test
     void testCreatePaymentEmptyOrder() {
         assertThrows(IllegalArgumentException.class, () -> {
             Payment payment = new Payment("f887b638-99fe-4fd3-9ed3-7f4398351cc4",
-                    "Cash on Delivery", paymentDataCod, null);});
+                    PaymentMethod.COD.getValue(), paymentDataCod, null);});
     }
 }
