@@ -62,7 +62,7 @@ Assertion arguments should be passed in the correct order java:S3415`, isu ini d
 2. Menurut saya, implementasi yang sekarang telah memenuhi definisi CI dan CD. Pada implementasi sekarang, setiap terjadi perubahan atau perbaruan *codebase* yang di-*push*, maka akan langsung dilakukan pengetesan *unit tests* oleh GitHub Actions, dan *code analysis* oleh OSSF Scorecard dan SonarCloud sehingga sudah memenuhi definisi dari *Continuous Integration*. Dengan ini kode akan dicek kualitas dan kebenarannya setiap terjadi perubahan. Lalu, setiap *push* pada branch *master* yang dilakukan juga akan dilakukan *deployment* yang otomatis oleh Koyeb beserta tes-tesnya sehingga sudah memenuhi *Continuous Deployment*. Dengan ini maka workflow kode sudah memenuhi definisi dari *Continuous Integration* dan *Continuous Deployment*. Dengan ini juga setiap perubahan kode di *branch master* akan langsung mengetes dan mengdeploy proyek sehingga proses automasi CI/CD terjadi.
 </details>
 
-<details open>
+<details>
 
 <summary>Modul 3</summary>
 
@@ -82,4 +82,25 @@ Assertion arguments should be passed in the correct order java:S3415`, isu ini d
 3. Explain the disadvantages of not applying SOLID principles to your project with examples.
 - Kode yang berantakan/sulit dibaca, misalkan SOLID Principle tidak diterapkan maka class `CarController` akan tetap berada pada file `ProductController.java` yang seharusnya hanya untuk class `ProductController`, akibatnya kode berantakan yang juga memengaruhi hal lainnya.
 - Mengurangi *maintainability*, misalkan SOLID Principle tidak diterapkan maka suatu interface bisa saja menjadi `ProductAndCarService`
+</details>
+
+<details open>
+
+<summary>Modul 4</summary>
+
+## Modul 4
+### Reflection
+
+1. Menurut saya pembuatan *flow* TDD pada modul ini berguna. Percival mengatakan bahwa evaluasi tes-tes dilakukan berdasarkan *correctness*,  *maintanability*, dan *productive workflow*.
+- *Correctness*: Pada pengerjaan modul ini, dengan dibikinnya tes-tes terlebih dahulu, setiap *method* dari class sudah ditentukan apa yang seharusnya dilakukan/benar. Sehingga TDD membantu memastikan *correctness* kode.
+- *Maintanability*: Dengan melakukan TDD, saya menjadi lebih yakin untuk melakukan *refactoring* karena setelahnya saya bisa menjalankan tes-tes yang sudah dibuat untuk mengecek apakah refactor berhasil dilakukan atau tidak. Contohnya adalah saat melakukan *refactor* mengganti *string literal* menjadi sebuah elemen *enumeration*, setelah dilakukan selama tes berhasil berarti *refactor* tidak merusak fungsionalitas kode.
+- *Productive Workflow*: Walaupun *TDD based development* saya tidak merasakan lama dalam menunggu tes, sebaliknya untuk setiap fitur/*method* yang dibuat saya bisa langsung mengeceknya dengan menjalankan tes yang spesifik terhadap fitur tersebut. Sehingga tidak harus menyelesaikan keseluruhan kode untuk menjalankan seluruh *test suite*, melainkan bisa berupa *subset*-nya.
+
+2. Menurut saya, tes-tes saya sudah mengikuti prinsip F.I.R.S.T.
+- *Fast*: Tes-tes yang ada dapat berjalan dengan cepat sehingga saya tidak merasa terganggu dalam melakukannya. Jika tes-tes memerlukan komponen eksternal, maka dapat dilakukan *mock* sehingga waktu tes tidak terefek banyak.
+- *Isolated/Independent*: Tes yang saya buat tidak memengaruhi ataupun dipengaruhi tes-tes lain, ini karena digunakan metode seperti `setUp()` yang dijalankan sebelum setiap tesnya sehingga kondisi awal tes sama semua/konsisten.
+- *Repeatable*: Tes yang dibuat *repeatable* karena hasilnya sama jika kode tidak ada yang diubah. Ini juga berhubungan dengan metode `setUp()` yang menghasilkan hasil tes yang sama setiap kali dijalankan.
+- *Self-validating*: Pada *test suite* proyek ini, semuanya hanya melakukan *assertion* sehingga tidak ada proses yang memerlukan pengecekan manual. Selain itu assertion pada tes yang ada juga tidak berlebih dan hanya memastikan yang penting.
+- *Thorough/Timely*: Walaupun setelah dicek tidak terdapat 100% *code coverage*, *test suite*-nya menurut saya sudah mengcover kebanyakan case-case. Lain kali, saya harus meng-*improve coverage* kode sehingga tes lebih menyeluruh.
+
 </details>
