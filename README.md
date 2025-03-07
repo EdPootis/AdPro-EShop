@@ -100,7 +100,7 @@ Assertion arguments should be passed in the correct order java:S3415`, isu ini d
 - *Fast*: Tes-tes yang ada dapat berjalan dengan cepat sehingga saya tidak merasa terganggu dalam melakukannya. Jika tes-tes memerlukan komponen eksternal, maka dapat dilakukan *mock* sehingga waktu tes tidak terefek banyak.
 - *Isolated/Independent*: Tes yang saya buat tidak memengaruhi ataupun dipengaruhi tes-tes lain, ini karena digunakan metode seperti `setUp()` yang dijalankan sebelum setiap tesnya sehingga kondisi awal tes sama semua/konsisten.
 - *Repeatable*: Tes yang dibuat *repeatable* karena hasilnya sama jika kode tidak ada yang diubah. Ini juga berhubungan dengan metode `setUp()` yang menghasilkan hasil tes yang sama setiap kali dijalankan.
-- *Self-validating*: Pada *test suite* proyek ini, semuanya hanya melakukan *assertion* sehingga tidak ada proses yang memerlukan pengecekan manual.
-- *Thorough/Timely*: Walaupun setelah dicek tidak terdapat 100% *code coverage*, *test suite*-nya menurut saya sudah mengcover kebanyakan case-case.
+- *Self-validating*: Pada *test suite* proyek ini, semuanya hanya melakukan *assertion* sehingga tidak ada proses yang memerlukan pengecekan manual. Selain itu assertion pada tes yang ada juga tidak berlebih dan hanya memastikan yang penting.
+- *Thorough/Timely*: Walaupun setelah dicek tidak terdapat 100% *code coverage*, *test suite*-nya menurut saya sudah mengcover kebanyakan case-case. Lain kali, saya harus meng-*improve coverage* kode sehingga tes lebih menyeluruh.
 
 </details>
